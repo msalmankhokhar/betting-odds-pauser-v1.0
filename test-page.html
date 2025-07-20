@@ -344,8 +344,7 @@
             document.getElementById('updateStatus').textContent = '🔄 Odds Updating Live';
             document.getElementById('updateStatus').style.backgroundColor = '#28a745';
         }
-        
-        // Initialize on page load
+          // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Test betting page loaded');
             startOddsUpdates();
@@ -353,6 +352,18 @@
             // Initial odds update
             updateOdds();
             updateFancyRates();
+        });
+        
+        // Listen for extension resume event
+        window.addEventListener('oddsTimersResumed', function() {
+            console.log('Extension resumed timers, restarting odds updates...');
+            // Clear any existing timers first
+            if (mainUpdateTimer) clearInterval(mainUpdateTimer);
+            if (fastUpdateTimer) clearInterval(fastUpdateTimer);
+            if (slowUpdateTimer) clearInterval(slowUpdateTimer);
+            
+            // Restart all timers
+            startOddsUpdates();
         });
         
         // Listen for when timers are paused/resumed by extension

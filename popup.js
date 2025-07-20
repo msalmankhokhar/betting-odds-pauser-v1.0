@@ -4,18 +4,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const resumeBtn = document.getElementById('resumeBtn');
     const statusDiv = document.getElementById('status');
     const statusText = document.getElementById('statusText');
-    const timerNumber = document.getElementById('timerNumber');
-    
-    // Get current tab and send message to content script
+    const timerNumber = document.getElementById('timerNumber');      // Get current tab and send message to content script
     function sendMessageToCurrentTab(action, callback) {
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             if (tabs[0]) {
-                chrome.tabs.sendMessage(tabs[0].id, {action: action}, callback);
+                // Try to send message first
+                chrome.tabs.sendMessage(tabs[0].id, {action: action}, function(response) {
+                    if (chrome.runtime.lastError) {
+                        // If content script not found, inject it manually
+                        console.log('Content script not found, injecting manually...');
+                        injectContentScript(tabs[0].id, function() {
+                            // Try sending message again after injection
+                            setTimeout(() => {
+                                chrome.tabs.sendMessage(tabs[0].id, {action: action}, function(response) {
+                                    if (chrome.runtime.lastError) {
+                                        console.log('Failed to connect after injection:', chrome.runtime.lastError);
+                                        callback(null);
+                                    } else {
+                                        callback(response);
+                                    }
+                                });
+                            }, 200); // Increased delay
+                        });
+                    } else {
+                        callback(response);
+                    }
+                });
+            } else {
+                callback(null);
             }
         });
     }
     
-    // Update UI based on current status
+    // Manually inject content script if needed
+    function injectContentScript(tabId, callback) {
+        chrome.scripting.executeScript({
+            target: {tabId: tabId},
+            files: ['content.js']
+        }, callback);
+    }
+      // Update UI based on current status
     function updateUI(isPaused, timerCount) {
         if (isPaused) {
             statusDiv.className = 'status paused';
@@ -29,8 +57,10 @@ document.addEventListener('DOMContentLoaded', function() {
             resumeBtn.style.display = 'none';
         }
         
-        if (timerCount) {
-            timerNumber.textContent = timerCount.total || 0;
+        if (timerCount && typeof timerCount.total === 'number') {
+            timerNumber.textContent = timerCount.total;
+        } else {
+            timerNumber.textContent = '0';
         }
     }
     
@@ -93,22 +123,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.removeChild(notification);
             }, 300);
         }, 2000);
-    }
+    }    // Debounce status updates to prevent flickering
+    let statusUpdateTimeout;
+    let lastKnownStatus = null;
     
-    // Initial status check
-    sendMessageToCurrentTab('getStatus', function(response) {
-        if (response) {
-            updateUI(response.isPaused, response.timerCount);
-        } else {
-            statusText.textContent = '❌ Not connected to page';
-            statusDiv.className = 'status running';
-        }
-    });
+    function debouncedUpdateUI(isPaused, timerCount) {
+        clearTimeout(statusUpdateTimeout);
+        statusUpdateTimeout = setTimeout(() => {
+            // Only update if status actually changed
+            let newStatus = JSON.stringify({isPaused, timerCount});
+            if (newStatus !== lastKnownStatus) {
+                updateUI(isPaused, timerCount);
+                lastKnownStatus = newStatus;
+            }
+        }, 100);
+    }
     
     // Listen for status updates from content script
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.action === 'statusUpdate') {
-            updateUI(request.isPaused, request.timerCount);
+            debouncedUpdateUI(request.isPaused, request.timerCount);
+        }
+    });
+    
+    // Initial status check
+    sendMessageToCurrentTab('getStatus', function(response) {
+        if (response) {
+            debouncedUpdateUI(response.isPaused, response.timerCount);
+        } else {
+            statusText.textContent = '🔄 Connecting...';
+            statusDiv.className = 'status running';
+            
+            // Try to manually inject and reconnect
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                if (tabs[0]) {
+                    injectContentScript(tabs[0].id, function() {
+                        setTimeout(() => {
+                            sendMessageToCurrentTab('getStatus', function(retryResponse) {
+                                if (retryResponse) {
+                                    debouncedUpdateUI(retryResponse.isPaused, retryResponse.timerCount);
+                                } else {
+                                    statusText.textContent = '❌ Not compatible with this page';
+                                    statusDiv.className = 'status running';
+                                }
+                            });
+                        }, 500);
+                    });
+                }
+            });
         }
     });
     

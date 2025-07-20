@@ -4,25 +4,42 @@
   "version": "1.0",
   "description": "Pause/Resume betting odds updates on cricket betting websites",
   
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  
   "permissions": [
     "activeTab",
     "storage",
     "scripting"
   ],
   
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Betting Odds Pauser"
+    "default_title": "Betting Odds Pauser",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
   
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "js": ["content.js"],
-      "run_at": "document_start"
+      "run_at": "document_start",
+      "all_frames": true
     }
   ],
-    "background": {
+  
+  "background": {
     "service_worker": "background.js"
   }
 }

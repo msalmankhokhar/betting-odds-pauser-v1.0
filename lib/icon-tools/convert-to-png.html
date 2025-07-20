@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SVG to PNG Converter</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .icon-preview { display: inline-block; margin: 10px; text-align: center; }
+        .icon-preview img, .icon-preview canvas { border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Extension Icon Generator</h1>
+        
+        <div id="icons-container">
+            <!-- Icons will be generated here -->
+        </div>
+        
+        <button onclick="generateIcons()">Generate PNG Icons</button>
+        <button onclick="downloadAll()">Download All Icons</button>
+        
+        <div id="download-links"></div>
+    </div>
+
+    <script>
+        const iconSizes = [16, 48, 128];
+        const svgContent = `<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="#ff5722" stroke="#d32f2f" stroke-width="4"/>
+  
+  <!-- Pause symbol -->
+  <rect x="45" y="35" width="12" height="58" fill="white" rx="2"/>
+  <rect x="71" y="35" width="12" height="58" fill="white" rx="2"/>
+  
+  <!-- Cricket ball pattern -->
+  <circle cx="64" cy="64" r="45" fill="none" stroke="white" stroke-width="2" opacity="0.3"/>
+  <path d="M 30 64 Q 64 45 98 64" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+  <path d="M 30 64 Q 64 83 98 64" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+  
+  <!-- Small text -->
+  <text x="64" y="110" text-anchor="middle" fill="white" font-family="Arial" font-size="10" font-weight="bold">ODDS</text>
+</svg>`;
+
+        function generateIcons() {
+            const container = document.getElementById('icons-container');
+            container.innerHTML = '';
+            
+            iconSizes.forEach(size => {
+                const div = document.createElement('div');
+                div.className = 'icon-preview';
+                
+                // Create canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                
+                // Create image from SVG
+                const img = new Image();
+                const svgBlob = new Blob([svgContent], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(svgBlob);
+                
+                img.onload = function() {
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, size, size);
+                    URL.revokeObjectURL(url);
+                    
+                    // Create download link
+                    canvas.toBlob(function(blob) {
+                        const link = document.createElement('a');
+                        link.download = `icon${size}.png`;
+                        link.href = URL.createObjectURL(blob);
+                        link.textContent = `Download ${size}x${size}`;
+                        link.style.display = 'block';
+                        
+                        const linksContainer = document.getElementById('download-links');
+                        linksContainer.appendChild(link);
+                    });
+                };
+                
+                img.src = url;
+                
+                div.innerHTML = `<h3>${size}x${size}</h3>`;
+                div.appendChild(canvas);
+                container.appendChild(div);
+            });
+        }
+        
+        function downloadAll() {
+            const links = document.querySelectorAll('#download-links a');
+            links.forEach((link, index) => {
+                setTimeout(() => {
+                    link.click();
+                }, index * 500);
+            });
+        }
+        
+        // Auto-generate on load
+        window.onload = generateIcons;
+    </script>
+</body>
+</html>

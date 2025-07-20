@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Extension Icons</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .icon-container { margin: 20px 0; }
+        canvas { border: 1px solid #ccc; margin: 10px; }
+        .download-section { margin: 20px 0; padding: 20px; background: #f5f5f5; }
+        pre { background: white; padding: 10px; border: 1px solid #ccc; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Extension Icon Generator</h1>
+    
+    <div class="icon-container">
+        <h3>Generated Icons:</h3>
+        <canvas id="icon16" width="16" height="16"></canvas>
+        <canvas id="icon48" width="48" height="48"></canvas>
+        <canvas id="icon128" width="128" height="128"></canvas>
+    </div>
+    
+    <div class="download-section">
+        <h3>Download Instructions:</h3>
+        <p>Right-click on each canvas above and select "Save image as..." to download the PNG files.</p>
+        <p>Save them as:</p>
+        <ul>
+            <li>16x16 canvas → <strong>icon16.png</strong></li>
+            <li>48x48 canvas → <strong>icon48.png</strong></li>
+            <li>128x128 canvas → <strong>icon128.png</strong></li>
+        </ul>
+        <p>Save all files in the <code>icons/</code> folder of your extension.</p>
+    </div>
+
+    <script>
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const scale = size / 128; // Scale based on 128px base size
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Background circle
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, 60 * scale, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ff5722';
+            ctx.fill();
+            ctx.strokeStyle = '#d32f2f';
+            ctx.lineWidth = 4 * scale;
+            ctx.stroke();
+            
+            // Pause symbol - left bar
+            ctx.fillStyle = 'white';
+            ctx.fillRect(45 * scale, 35 * scale, 12 * scale, 58 * scale);
+            
+            // Pause symbol - right bar
+            ctx.fillRect(71 * scale, 35 * scale, 12 * scale, 58 * scale);
+            
+            // Cricket ball pattern - outer circle
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, 45 * scale, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2 * scale;
+            ctx.stroke();
+            
+            // Cricket ball seam lines
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2 * scale;
+            
+            // Top curve
+            ctx.moveTo(30 * scale, size/2);
+            ctx.quadraticCurveTo(size/2, 45 * scale, 98 * scale, size/2);
+            ctx.stroke();
+            
+            // Bottom curve
+            ctx.beginPath();
+            ctx.moveTo(30 * scale, size/2);
+            ctx.quadraticCurveTo(size/2, 83 * scale, 98 * scale, size/2);
+            ctx.stroke();
+            
+            // Text "ODDS" (only for larger sizes)
+            if (size >= 48) {
+                ctx.fillStyle = 'white';
+                ctx.font = `bold ${10 * scale}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.fillText('ODDS', size/2, 110 * scale);
+            }
+        }
+        
+        // Generate all icon sizes
+        drawIcon(document.getElementById('icon16'), 16);
+        drawIcon(document.getElementById('icon48'), 48);
+        drawIcon(document.getElementById('icon128'), 128);
+        
+        // Add download functionality
+        function addDownloadLinks() {
+            const sizes = [16, 48, 128];
+            const downloadSection = document.querySelector('.download-section');
+            
+            sizes.forEach(size => {
+                const canvas = document.getElementById(`icon${size}`);
+                const link = document.createElement('a');
+                link.download = `icon${size}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.textContent = `Download icon${size}.png`;
+                link.style.display = 'block';
+                link.style.margin = '5px 0';
+                downloadSection.appendChild(link);
+            });
+        }
+        
+        // Add download links after images are generated
+        setTimeout(addDownloadLinks, 100);
+    </script>
+</body>
+</html>

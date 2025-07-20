@@ -1,0 +1,20 @@
+{
+  "name": "betting-odds-pauser-v1.0",
+  "version": "1.0.0",
+  "description": "A Chrome extension specifically designed to pause and resume real-time odds updates on cricket betting websites. This extension intercepts and controls JavaScript timer functions that are responsible for automatically refreshing betting odds.",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msalmankhokhar/betting-odds-pauser-v1.0.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msalmankhokhar/betting-odds-pauser-v1.0/issues"
+  },
+  "homepage": "https://github.com/msalmankhokhar/betting-odds-pauser-v1.0#readme"
+}
