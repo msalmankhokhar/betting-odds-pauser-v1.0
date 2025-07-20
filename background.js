@@ -1,5 +1,10 @@
-// Background Service Worker
+// Background Service Worker for Betting Odds Pauser Extension
+// Professional Chrome Extension by Salman Malik
+// LinkedIn: https://www.linkedin.com/in/msalmankhokhar/
+// Available for custom extension development
+
 chrome.runtime.onInstalled.addListener(() => {
+    console.log('[Odds Pauser] Professional Extension by Salman Malik - LinkedIn: https://www.linkedin.com/in/msalmankhokhar/');
     console.log('Betting Odds Pauser extension installed');
     // Initialize badge
     updateBadge(false);

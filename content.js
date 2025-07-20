@@ -1,4 +1,8 @@
 // Content Script - Injected into web pages to control timers
+// Professional Chrome Extension by Salman Malik
+// LinkedIn: https://www.linkedin.com/in/msalmankhokhar/
+// Betting Odds Pauser - Advanced Timer Control System
+
 (function() {
     'use strict';
     
@@ -10,6 +14,7 @@
     
     // Mark as injected
     window.oddsTimerController = true;
+    console.log('[Odds Pauser] Professional Extension by Salman Malik - LinkedIn: https://www.linkedin.com/in/msalmankhokhar/');
       let isTimersPaused = false;
     let pausedTimers = [];
     let pausedIntervals = [];

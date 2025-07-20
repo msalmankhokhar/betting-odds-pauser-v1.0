@@ -1,8 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Betting Odds Pauser",
+  "name": "Betting Odds Pauser - By Salman Malik",
   "version": "1.0",
-  "description": "Pause/Resume betting odds updates on cricket betting websites",
+  "description": "Professional Chrome Extension by Salman Malik - Pause/Resume betting odds updates on cricket betting websites. Custom extensions available!",
+  "author": "Salman Malik",
+  "homepage_url": "https://www.linkedin.com/in/msalmankhokhar/",
   
   "icons": {
     "16": "icons/icon16.png",

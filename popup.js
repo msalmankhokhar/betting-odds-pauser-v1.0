@@ -1,10 +1,16 @@
 // Popup JavaScript - Controls the extension UI
+// Professional Chrome Extension by Salman Malik
+// LinkedIn: https://www.linkedin.com/in/msalmankhokhar/
+// Available for custom extension development
+
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Odds Pauser] Professional Extension by Salman Malik - LinkedIn: https://www.linkedin.com/in/msalmankhokhar/');
+    
     const pauseBtn = document.getElementById('pauseBtn');
     const resumeBtn = document.getElementById('resumeBtn');
     const statusDiv = document.getElementById('status');
     const statusText = document.getElementById('statusText');
-    const timerNumber = document.getElementById('timerNumber');      // Get current tab and send message to content script
+    const timerNumber = document.getElementById('timerNumber');// Get current tab and send message to content script
     function sendMessageToCurrentTab(action, callback) {
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             if (tabs[0]) {
