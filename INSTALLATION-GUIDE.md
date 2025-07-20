@@ -90,19 +90,11 @@ This extension:
 
 This extension was professionally developed by **Salman Malik**
 - 🔗 **LinkedIn**: [Connect with me](https://www.linkedin.com/in/msalmankhokhar/)
-- 💼 **Services**: Custom Chrome extension development
+- 💼 **Services**: Custom Chrome extension development, Web Application Development, Full Stack Software Development
 - 🚀 **Specialization**: Browser automation and productivity tools
 
-### Custom Development Services:
-- Extension customization and modifications
-- New feature development
-- Integration with business systems
-- Ongoing maintenance and support
+**© 2025 Salman Malik**
 
----
+*Contact me for your custom project needs.*
 
-**© 2025 Salman Malik - Professional Chrome Extension Developer**
-
-*Experience enterprise-grade extension development. Contact me for your custom project needs.*
-
-**[LinkedIn: msalmankhokhar](https://www.linkedin.com/in/msalmankhokhar/) | Available for custom development**
+**[LinkedIn: msalmankhokhar](https://www.linkedin.com/in/msalmankhokhar/) | Available for custom software development**
