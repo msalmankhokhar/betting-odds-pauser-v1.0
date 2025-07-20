@@ -1,0 +1,10 @@
+<!-- 128x128 SVG Icon -->
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="64" cy="64" r="60" fill="#ff5722" stroke="#d32f2f" stroke-width="4"/>
+  <rect x="45" y="35" width="12" height="58" fill="white" rx="2"/>
+  <rect x="71" y="35" width="12" height="58" fill="white" rx="2"/>
+  <circle cx="64" cy="64" r="45" fill="none" stroke="white" stroke-width="2" opacity="0.3"/>
+  <path d="M 30 64 Q 64 45 98 64" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+  <path d="M 30 64 Q 64 83 98 64" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+  <text x="64" y="110" text-anchor="middle" fill="white" font-family="Arial" font-size="10" font-weight="bold">ODDS</text>
+</svg>

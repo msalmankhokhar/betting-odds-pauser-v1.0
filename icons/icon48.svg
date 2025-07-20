@@ -1,0 +1,7 @@
+<!-- 48x48 SVG Icon -->
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="24" cy="24" r="22" fill="#ff5722" stroke="#d32f2f" stroke-width="2"/>
+  <rect x="16" y="12" width="4" height="24" fill="white" rx="1"/>
+  <rect x="28" y="12" width="4" height="24" fill="white" rx="1"/>
+  <text x="24" y="42" text-anchor="middle" fill="white" font-family="Arial" font-size="6" font-weight="bold">ODDS</text>
+</svg>
